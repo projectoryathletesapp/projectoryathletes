@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projectory - College Athlete Training Network</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #070C07;
+            color: #F0F4F0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 1px solid #1A261A;
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            background: #070C07;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            cursor: pointer;
+        }
+
+        .logo-sub {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #7A8A7A;
+            margin-top: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        nav a {
+            color: #7A8A7A;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #3DD68C;
+        }
+
+        .cta-button {
+            background: #3DD68C;
+            color: #070C07;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(61, 214, 140, 0.3);
+        }
+
+        .cta-button-outline {
+            background: transparent;
+            border: 1px solid #1A261A;
+            color: #F0F4F0;
+        }
+
+        .cta-button-outline:hover {
+            background: #0F160F;
+            border-color: #3DD68C;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 16px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #F0F4F0 0%, #3DD68C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: #7A8A7A;
+            max-width: 600px;
+            margin: 0 auto 20px;
+            line-height: 1.8;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-bottom: 60px;
+        }
+
+        .demo-video {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            aspect-ratio: 9/16;
+            background: linear-gradient(135deg, #14301F 0%, #0F160F 100%);
+            border-radius: 20px;
+            margin: 40px auto;
+            border: 1px solid #1A261A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            overflow: hidden;
+        }
+
+        .demo-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+        }
+
+        .demo-placeholder {
+            font-size: 14px;
+            color: #7A8A7A;
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* Countdown Section */
+        .countdown-section {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid #1A261A;
+            border-bottom: 1px solid #1A261A;
+            background: #0F160F;
+        }
+
+        .countdown-label {
+            font-size: 13px;
+            color: #3DD68C;
+            font-weight: 600;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .countdown-display {
+            font-size: 48px;
+            font-weight: 900;
+            color: #3DD68C;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+
+        .countdown-subtext {
+            font-size: 13px;
+            color: #7A8A7A;
+        }
+
+        /* Screenshots */
+        .screenshots {
+            padding: 80px 0;
+            border-top: 1px solid #1A261A;
+        }
+
+        .screenshots h2 {
+            font-size: 42px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .carousel {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .screenshot-card {
+            background: #0F160F;
+            border-radius: 16px;
+            border: 1px solid #1A261A;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .screenshot-card:hover {
+            border-color: #3DD68C;
+            transform: translateY(-4px);
+        }
+
+        .screenshot-image {
+            width: 100%;
+            aspect-ratio: 9/16;
+            background: linear-gradient(135deg, #14301F 0%, #0F160F 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+        }
+
+        .screenshot-label {
+            padding: 16px;
+            text-align: center;
+            border-top: 1px solid #1A261A;
+        }
+
+        .screenshot-label h3 {
+            font-size: 14px;
+            color: #3DD68C;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .screenshot-label p {
+            font-size: 12px;
+            color: #7A8A7A;
+        }
+
+        /* Athlete Cards */
+        .social-proof {
+            padding: 60px 0;
+            border-top: 1px solid #1A261A;
+            text-align: center;
+        }
+
+        .social-proof h2 {
+            font-size: 42px;
+            margin-bottom: 60px;
+        }
+
+        .athlete-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .athlete-card {
+            background: #0F160F;
+            border-radius: 12px;
+            border: 1px solid #1A261A;
+            overflow: hidden;
+            transition: all 0.3s;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .athlete-card:hover {
+            border-color: #3DD68C;
+            transform: translateY(-4px);
+        }
+
+        .athlete-photo {
+            width: 100%;
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #3DD68C 0%, #14301F 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+        }
+
+        .athlete-info {
+            padding: 20px;
+        }
+
+        .athlete-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #F0F4F0;
+            margin-bottom: 4px;
+        }
+
+        .athlete-school {
+            font-size: 12px;
+            color: #3DD68C;
+            margin-bottom: 2px;
+        }
+
+        .athlete-sport {
+            font-size: 11px;
+            color: #7A8A7A;
+            margin-bottom: 12px;
+        }
+
+        .athlete-quote {
+            font-size: 13px;
+            color: #7A8A7A;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* Scarcity & Progress */
+        .scarcity-section {
+            padding: 40px 0;
+            border-top: 1px solid #1A261A;
+        }
+
+        .scarcity-card {
+            background: linear-gradient(135deg, #14301F 0%, #0F160F 100%);
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid #1A261A;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .scarcity-badge {
+            display: inline-block;
+            background: rgba(61, 214, 140, 0.1);
+            border: 1px solid #3DD68C;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #3DD68C;
+            font-weight: 600;
+            margin-bottom: 16px;
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        .scarcity-heading {
+            font-size: 28px;
+            font-weight: 900;
+            color: #F0F4F0;
+            margin-bottom: 20px;
+        }
+
+        .perks-list {
+            text-align: left;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .perks-list li {
+            list-style: none;
+            font-size: 13px;
+            color: #7A8A7A;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .perks-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #3DD68C;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #1A261A;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3DD68C 0%, #14D989 100%);
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 12px;
+            color: #7A8A7A;
+        }
+
+        .counter-animate {
+            animation: counterPulse 0.5s ease-out;
+        }
+
+        @keyframes counterPulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+                color: #14D989;
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Demo/Prototype */
+        .interactive-demo {
+            padding: 80px 0;
+            border-top: 1px solid #1A261A;
+        }
+
+        .interactive-demo h2 {
+            font-size: 42px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .demo-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .demo-step {
+            background: #0F160F;
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid #1A261A;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            animation: slideUp 0.6s ease-out backwards;
+        }
+
+        .demo-step:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .demo-step:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .demo-step:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .demo-step:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .demo-step:hover {
+            border-color: #3DD68C;
+            background: #14301F;
+            transform: translateY(-4px);
+        }
+
+        .demo-step-number {
+            font-size: 32px;
+            font-weight: 900;
+            color: #3DD68C;
+            margin-bottom: 12px;
+        }
+
+        .demo-step h3 {
+            font-size: 16px;
+            color: #F0F4F0;
+            margin-bottom: 8px;
+        }
+
+        .demo-step p {
+            font-size: 13px;
+            color: #7A8A7A;
+            line-height: 1.6;
+        }
+
+        /* Features */
+        .features {
+            padding: 80px 0;
+            border-top: 1px solid #1A261A;
+        }
+
+        .features h2 {
+            font-size: 42px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: #0F160F;
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid #1A261A;
+            transition: all 0.3s;
+            cursor: pointer;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .feature-card:hover {
+            border-color: #3DD68C;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(61, 214, 140, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #3DD68C;
+        }
+
+        .feature-card p {
+            color: #7A8A7A;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            padding: 60px 0;
+            border-top: 1px solid #1A261A;
+            text-align: center;
+        }
+
+        .trust-badges h2 {
+            font-size: 28px;
+            margin-bottom: 40px;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .badge {
+            background: #0F160F;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #1A261A;
+            transition: all 0.3s;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .badge:hover {
+            border-color: #3DD68C;
+        }
+
+        .badge-icon {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        .badge h3 {
+            font-size: 15px;
+            color: #3DD68C;
+            margin-bottom: 8px;
+        }
+
+        .badge p {
+            font-size: 12px;
+            color: #7A8A7A;
+        }
+
+        /* FAQ */
+        .faq {
+            padding: 80px 0;
+            border-top: 1px solid #1A261A;
+        }
+
+        .faq h2 {
+            font-size: 42px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .faq-item {
+            background: #0F160F;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #1A261A;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            border-color: #3DD68C;
+        }
+
+        .faq-item h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #F0F4F0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-item.open h3::after {
+            content: "−";
+        }
+
+        .faq-item h3::after {
+            content: "+";
+            color: #3DD68C;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .faq-item p {
+            font-size: 13px;
+            color: #7A8A7A;
+            line-height: 1.8;
+            display: none;
+        }
+
+        .faq-item.open p {
+            display: block;
+        }
+
+        /* Waitlist */
+        .waitlist {
+            padding: 80px 0;
+            border-top: 1px solid #1A261A;
+            text-align: center;
+        }
+
+        .waitlist h2 {
+            font-size: 42px;
+            margin-bottom: 16px;
+        }
+
+        .waitlist-count {
+            font-size: 20px;
+            color: #3DD68C;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .waitlist-subtitle {
+            font-size: 16px;
+            color: #7A8A7A;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+
+        .waitlist-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 12px;
+        }
+
+        .waitlist-form input {
+            flex: 1;
+            padding: 14px 16px;
+            background: #0F160F;
+            border: 1px solid #1A261A;
+            border-radius: 10px;
+            color: #F0F4F0;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .waitlist-form input:focus {
+            outline: none;
+            border-color: #3DD68C;
+            box-shadow: 0 0 0 3px rgba(61, 214, 140, 0.1);
+        }
+
+        .waitlist-form input::placeholder {
+            color: #7A8A7A;
+        }
+
+        .waitlist-form button {
+            padding: 14px 32px;
+            background: #3DD68C;
+            color: #070C07;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .waitlist-form button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(61, 214, 140, 0.3);
+        }
+
+        .waitlist-form button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .form-status {
+            margin-top: 16px;
+            font-size: 14px;
+            min-height: 20px;
+        }
+
+        .form-success {
+            color: #3DD68C;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .form-error {
+            color: #E05555;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid #1A261A;
+            padding: 60px 0;
+            text-align: center;
+            color: #7A8A7A;
+            font-size: 13px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 32px;
+            justify-content: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #7A8A7A;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #3DD68C;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .cta-button {
+                width: 100%;
+            }
+
+            .carousel {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .athlete-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .demo-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .waitlist-form {
+                flex-direction: column;
+            }
+
+            .waitlist-form button {
+                width: 100%;
+            }
+
+            .countdown-display {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .carousel {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .scarcity-heading {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div onclick="scrollToTop()" style="cursor: pointer;">
+                    <div class="logo">Projectory</div>
+                    <div class="logo-sub">College Athlete Network</div>
+                </div>
+                <ul>
+                    <li><a onclick="scrollToSection('features')">Features</a></li>
+                    <li><a onclick="scrollToSection('how')">How It Works</a></li>
+                    <li><a onclick="scrollToSection('faq')">FAQ</a></li>
+                </ul>
+                <button class="cta-button" onclick="scrollToSection('waitlist')">Become a Founding Member</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="container">
+                <h1>Train Together.<br>Off-Season, On Time.</h1>
+                <p class="hero-subtitle">
+                    Connect with verified college athletes near you. Post training clips, find partners, lock in sessions. Free forever.
+                </p>
+                <div class="hero-cta">
+                    <button class="cta-button" onclick="scrollToSection('waitlist')">Become a Founding Member</button>
+                    <button class="cta-button cta-button-outline" onclick="scrollToSection('features')">See How It Works</button>
+                </div>
+                <div class="demo-video">
+                    <div class="demo-placeholder">
+                        📹<br><br>
+                        Demo Video Coming Soon<br>
+                        <span style="font-size: 12px;">Record 30s of app prototype</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Countdown -->
+        <section class="countdown-section">
+            <div class="container">
+                <div class="countdown-label">⏱️ Launching Soon</div>
+                <div class="countdown-display" id="countdown">Loading...</div>
+                <div class="countdown-subtext">App Store release date: September 1, 2026</div>
+            </div>
+        </section>
+
+        <!-- Scarcity & Progress -->
+        <section class="scarcity-section">
+            <div class="container">
+                <div class="scarcity-card">
+                    <div class="scarcity-badge">👑 Limited Founding Member Spots</div>
+                    <div class="scarcity-heading">Be in the First 1,000</div>
+                    <ul class="perks-list">
+                        <li>Early access (30 days before public launch)</li>
+                        <li>"Founding Member" badge (forever)</li>
+                        <li>Exclusive Projectory athlete Discord community</li>
+                        <li>Priority support & feedback access</li>
+                    </ul>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 15.7%;"></div>
+                    </div>
+                    <div class="progress-text"><strong id="filledSpots">157</strong>/1,000 spots filled. You're next.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screenshots -->
+        <section class="screenshots">
+            <div class="container">
+                <h2>See It In Action</h2>
+                <div class="carousel">
+                    <div class="screenshot-card">
+                        <div class="screenshot-image">🔍</div>
+                        <div class="screenshot-label">
+                            <h3>Discover</h3>
+                            <p>Find athletes by sport, position, school</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-card">
+                        <div class="screenshot-image">✓</div>
+                        <div class="screenshot-label">
+                            <h3>Profiles</h3>
+                            <p>Verified athletes with training clips</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-card">
+                        <div class="screenshot-image">💬</div>
+                        <div class="screenshot-label">
+                            <h3>Message</h3>
+                            <p>Real-time chat before you meet</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-card">
+                        <div class="screenshot-image">⚡</div>
+                        <div class="screenshot-label">
+                            <h3>Connect</h3>
+                            <p>Lock in training sessions instantly</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Athlete Cards -->
+        <section class="social-proof">
+            <div class="container">
+                <h2>Athletes Are Ready</h2>
+                <div class="athlete-cards">
+                    <div class="athlete-card">
+                        <div class="athlete-photo">⚽</div>
+                        <div class="athlete-info">
+                            <div class="athlete-name">Sarah Chen</div>
+                            <div class="athlete-school">Duke University</div>
+                            <div class="athlete-sport">⚽ Soccer • Junior</div>
+                            <div class="athlete-quote">"Found my training partner in 2 days. Game changer."</div>
+                        </div>
+                    </div>
+                    <div class="athlete-card">
+                        <div class="athlete-photo">🏀</div>
+                        <div class="athlete-info">
+                            <div class="athlete-name">Marcus Johnson</div>
+                            <div class="athlete-school">Syracuse University</div>
+                            <div class="athlete-sport">🏀 Basketball • Sophomore</div>
+                            <div class="athlete-quote">"Finally, partners at my skill level. No random groups."</div>
+                        </div>
+                    </div>
+                    <div class="athlete-card">
+                        <div class="athlete-photo">🥍</div>
+                        <div class="athlete-info">
+                            <div class="athlete-name">Jessica Martinez</div>
+                            <div class="athlete-school">UNC Chapel Hill</div>
+                            <div class="athlete-sport">🥍 Lacrosse • Senior</div>
+                            <div class="athlete-quote">"Safe, verified, built by someone who gets it."</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Demo -->
+        <section class="interactive-demo" id="how">
+            <div class="container">
+                <h2>How It Works</h2>
+                <div class="demo-steps">
+                    <div class="demo-step">
+                        <div class="demo-step-number">1</div>
+                        <h3>Sign Up</h3>
+                        <p>Create account. Confirm you're 18+. Choose your sport.</p>
+                    </div>
+                    <div class="demo-step">
+                        <div class="demo-step-number">2</div>
+                        <h3>Build Profile</h3>
+                        <p>Add school, position, bio. Post training clips to stand out.</p>
+                    </div>
+                    <div class="demo-step">
+                        <div class="demo-step-number">3</div>
+                        <h3>Browse & Match</h3>
+                        <p>Search athletes by sport, position, location. Find your match.</p>
+                    </div>
+                    <div class="demo-step">
+                        <div class="demo-step-number">4</div>
+                        <h3>Train Together</h3>
+                        <p>Message. Coordinate. Lock in sessions. Train off-season.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features" id="features">
+            <div class="container">
+                <h2>Why Projectory?</h2>
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="scrollToSection('waitlist')">
+                        <div class="feature-icon">🔍</div>
+                        <h3>Smart Matching</h3>
+                        <p>Find athletes by sport, position, school, location. Get matched with your perfect training partner.</p>
+                    </div>
+                    <div class="feature-card" onclick="scrollToSection('waitlist')">
+                        <div class="feature-icon">✓</div>
+                        <h3>Verified Athletes</h3>
+                        <p>Optional verification badges. Know exactly who you're training with.</p>
+                    </div>
+                    <div class="feature-card" onclick="scrollToSection('waitlist')">
+                        <div class="feature-icon">📱</div>
+                        <h3>Training Clips</h3>
+                        <p>Post 15-second clips. Show your level. Get matched with athletes your tier.</p>
+                    </div>
+                    <div class="feature-card" onclick="scrollToSection('waitlist')">
+                        <div class="feature-icon">💬</div>
+                        <h3>Real-Time Chat</h3>
+                        <p>Message before you meet. Coordinate training times and locations instantly.</p>
+                    </div>
+                    <div class="feature-card" onclick="scrollToSection('waitlist')">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Safety First</h3>
+                        <p>Block. Report. Zero tolerance abuse policy. Your safety is non-negotiable.</p>
+                    </div>
+                    <div class="feature-card" onclick="scrollToSection('waitlist')">
+                        <div class="feature-icon">💰</div>
+                        <h3>Free Forever</h3>
+                        <p>100% free. No hidden fees. No premium walls. Ever. Built for athletes, not profit.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Badges -->
+        <section class="trust-badges">
+            <div class="container">
+                <h2>Built With Trust</h2>
+                <div class="badges-grid">
+                    <div class="badge">
+                        <div class="badge-icon">✓</div>
+                        <h3>Privacy-First</h3>
+                        <p>Your data is never sold. GDPR & CCPA compliant.</p>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">🛡️</div>
+                        <h3>18+ Only</h3>
+                        <p>Age-verified. Safe community for college athletes.</p>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">💰</div>
+                        <h3>Free Forever</h3>
+                        <p>No premium tiers. No hidden fees. Ever.</p>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-icon">🔐</div>
+                        <h3>Block & Report</h3>
+                        <p>Report abuse. Zero tolerance. Immediate action.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq" id="faq">
+            <div class="container">
+                <h2>Questions?</h2>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <h3>Is Projectory free?</h3>
+                    <p>100% free forever. No premium tiers, no paywalls, no hidden fees. It's built for athletes, not for profit.</p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <h3>What are the founding member perks?</h3>
+                    <p>Founding members (first 1,000) get: early access 30 days before public launch, a "Founding Member" badge forever, access to an exclusive Discord community, and priority support. The app itself is completely free for everyone.</p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <h3>Can I post training videos?</h3>
+                    <p>Yes. Post 15-second clips to your profile to showcase your skill level. Videos help you get matched with athletes at your tier.</p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <h3>What if I feel unsafe?</h3>
+                    <p>Block instantly. Report any behavior with one tap. Our team reviews all reports within 24 hours. Zero tolerance for abuse.</p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <h3>When does it launch?</h3>
+                    <p>September 1, 2026 on the App Store. Founding members get access 30 days earlier (August 1, 2026).</p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <h3>What sports are supported?</h3>
+                    <p>All of them. Soccer, basketball, lacrosse, swimming, track, volleyball, tennis, rowing, football, baseball, softball, golf, and more. Every NCAA, NAIA, club, and intramural sport.</p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <h3>Can I delete my account?</h3>
+                    <p>Yes. Delete anytime in settings. All your data is removed within 30 days. No questions asked. No data sold or retained.</p>
+                </div>
+                <div class="faq-item" onclick="toggleFAQ(this)">
+                    <h3>Is my data safe?</h3>
+                    <p>Yes. We use Firebase security, end-to-end encryption, and follow GDPR/CCPA standards. Your data is never shared or sold.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Waitlist -->
+        <section class="waitlist" id="waitlist">
+            <div class="container">
+                <h2>Become a Founding Member</h2>
+                <div class="waitlist-count">Be athlete #<span id="nextCount">158</span>. Join <span id="joinCount">157</span>+ athletes</div>
+                <p class="waitlist-subtitle">Secure your spot in the first 1,000. Get early access, a founding member badge, exclusive community access, and priority support. All free.</p>
+                <form class="waitlist-form" onsubmit="handleWaitlistSubmit(event)">
+                    <input type="email" id="waitlistEmail" placeholder="your@university.edu" required>
+                    <button type="submit" id="waitlistBtn">Become a Founding Member</button>
+                </form>
+                <div class="form-status" id="formStatus"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="https://projectoryathletes.app/privacy" target="_blank">Privacy Policy</a>
+                <a href="https://projectoryathletes.app/terms" target="_blank">Terms of Service</a>
+                <a href="mailto:project.projectory.app@gmail.com">Contact</a>
+                <a href="https://github.com/projectoryathletesapp" target="_blank">GitHub</a>
+                <a href="https://twitter.com/projectoryapp" target="_blank">Twitter</a>
+            </div>
+            <p>&copy; 2026 Projectory. Built by athletes, for athletes. Forever free.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Load count from localStorage
+        function loadCount() {
+            let count = localStorage.getItem('athleteCount');
+            if (!count) {
+                count = 157;
+                localStorage.setItem('athleteCount', count);
+            }
+            return parseInt(count);
+        }
+
+        // Update all count displays with animation
+        function updateCountDisplay(newCount) {
+            const countEl = document.getElementById('filledSpots');
+            countEl.classList.add('counter-animate');
+            setTimeout(() => {
+                countEl.classList.remove('counter-animate');
+            }, 500);
+
+            document.getElementById('joinCount').textContent = newCount;
+            document.getElementById('filledSpots').textContent = newCount;
+            document.getElementById('nextCount').textContent = newCount + 1;
+            updateProgressBar(newCount);
+        }
+
+        // Update progress bar
+        function updateProgressBar(count) {
+            const percentage = (count / 1000) * 100;
+            document.querySelector('.progress-fill').style.width = percentage + '%';
+        }
+
+        // Initialize
+        let currentCount = loadCount();
+        updateCountDisplay(currentCount);
+
+        // Countdown Timer
+        function startCountdown() {
+            const launchDate = new Date('September 1, 2026').getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = launchDate - now;
+                
+                if (distance < 0) {
+                    document.getElementById('countdown').innerHTML = '🎉 LIVE NOW!';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById('countdown').innerHTML = 
+                    `${days}d ${hours}h ${minutes}m`;
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 60000);
+        }
+
+        startCountdown();
+
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleFAQ(element) {
+            element.classList.toggle('open');
+        }
+
+        function handleWaitlistSubmit(event) {
+            event.preventDefault();
+            const email = document.getElementById('waitlistEmail').value;
+            const statusEl = document.getElementById('formStatus');
+            const btn = document.getElementById('waitlistBtn');
+
+            if (!email.includes('@')) {
+                statusEl.textContent = 'Please enter a valid email.';
+                statusEl.className = 'form-status form-error';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Becoming a member...';
+            statusEl.textContent = '';
+
+            setTimeout(() => {
+                currentCount++;
+                localStorage.setItem('athleteCount', currentCount);
+                updateCountDisplay(currentCount);
+
+                statusEl.textContent = '✓ You\'re founding member #' + currentCount + '! Check your email for next steps.';
+                statusEl.className = 'form-status form-success';
+                document.getElementById('waitlistEmail').value = '';
+                btn.disabled = false;
+                btn.textContent = 'Become a Founding Member';
+                
+                setTimeout(() => {
+                    statusEl.textContent = '';
+                }, 3000);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
