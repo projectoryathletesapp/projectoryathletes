@@ -447,8 +447,7 @@
                 status.textContent = '';
 
                 db.collection("signups").add({
-                    email: email,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                    email: email
                 }).then(() => {
                     status.textContent = '✓ Welcome! Check your email for next steps.';
                     status.className = 'form-status form-success';
@@ -457,8 +456,8 @@
                     btn.textContent = 'Become a Founding Member';
                     setTimeout(() => { status.textContent = ''; }, 3000);
                 }).catch(err => {
-                    console.error(err);
-                    status.textContent = 'Error. Try again.';
+                    console.error("Firebase error:", err);
+                    status.textContent = 'Error: ' + err.message;
                     status.className = 'form-status form-error';
                     btn.disabled = false;
                     btn.textContent = 'Become a Founding Member';
