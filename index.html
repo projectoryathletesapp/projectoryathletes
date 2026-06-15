@@ -453,15 +453,32 @@
             fetch(url)
                 .then(res => res.json())
                 .then(data => {
-                    if (data.fields && data.fields.count) {
-                        const count = parseInt(data.fields.count.integerValue);
+                    console.log("Count document data:", JSON.stringify(data));
+                    const count = extractCount(data);
+                    if (count !== null) {
                         updateCountDisplay(count);
+                    } else {
+                        updateCountDisplay(15);
                     }
                 })
-                .catch(err => console.error("Load count error:", err));
+                .catch(err => {
+                    console.error("Load count error:", err);
+                    updateCountDisplay(15);
+                });
+        }
+
+        function extractCount(data) {
+            if (data && data.fields && data.fields.count) {
+                const c = data.fields.count;
+                if (c.integerValue !== undefined) return parseInt(c.integerValue);
+                if (c.doubleValue !== undefined) return Math.floor(c.doubleValue);
+                if (c.stringValue !== undefined) return parseInt(c.stringValue);
+            }
+            return null;
         }
 
         function updateCountDisplay(count) {
+            if (isNaN(count) || count === null) count = 15;
             document.getElementById('joinCount').textContent = count;
             document.getElementById('filledSpots').textContent = count;
             document.getElementById('nextCount').textContent = count + 1;
@@ -502,10 +519,9 @@
             })
             .then(res => res.json())
             .then(data => {
-                let currentCount = 15;
-                if (data.fields && data.fields.count) {
-                    currentCount = parseInt(data.fields.count.integerValue);
-                }
+                console.log("Count data on submit:", JSON.stringify(data));
+                let currentCount = extractCount(data);
+                if (currentCount === null || isNaN(currentCount)) currentCount = 15;
                 const newCount = currentCount + 1;
                 
                 // Step 3: Update the count
