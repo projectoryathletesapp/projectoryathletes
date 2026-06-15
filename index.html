@@ -452,35 +452,42 @@
             const btn = document.getElementById('btn');
             const status = document.getElementById('status');
 
-            if (!db) {
-                status.textContent = 'Firebase not ready. Refreshing...';
-                status.className = 'form-status form-error';
-                location.reload();
-                return;
-            }
-
             btn.disabled = true;
             btn.textContent = 'Joining...';
             status.textContent = '';
 
-            console.log("Writing to signups:", email);
+            // Use REST API instead of SDK
+            const apiUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/(default)/documents/signups`;
+            
+            const payload = {
+                fields: {
+                    email: { stringValue: email },
+                    timestamp: { timestampValue: new Date().toISOString() }
+                }
+            };
 
-            // Try writing directly without waiting for response
-            db.collection("signups").doc().set({
-                email: email,
-                timestamp: new Date()
-            }, { merge: true }).then(() => {
-                console.log("Success!");
-                status.textContent = '✓ Welcome! Check your email for next steps.';
-                status.className = 'form-status form-success';
-                document.getElementById('email').value = '';
-                btn.disabled = false;
-                btn.textContent = 'Become a Founding Member';
-                setTimeout(() => { status.textContent = ''; }, 3000);
-            }).catch(err => {
-                console.error("Error code:", err.code, "Message:", err.message);
-                status.textContent = 'Error: ' + (err.code || 'Connection failed');
+            fetch(apiUrl + "?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(res => {
+                console.log("Response status:", res.status);
+                if (res.ok) {
+                    status.textContent = '✓ Welcome! Check your email for next steps.';
+                    status.className = 'form-status form-success';
+                    document.getElementById('email').value = '';
+                    setTimeout(() => { status.textContent = ''; }, 3000);
+                } else {
+                    return res.json().then(err => { throw err; });
+                }
+            })
+            .catch(err => {
+                console.error("REST API error:", err);
+                status.textContent = 'Error: Check console logs';
                 status.className = 'form-status form-error';
+            })
+            .finally(() => {
                 btn.disabled = false;
                 btn.textContent = 'Become a Founding Member';
             });
