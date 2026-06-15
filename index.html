@@ -446,6 +446,29 @@
             }
         }
 
+        // Load the current count on page load
+        function loadCount() {
+            const url = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
+            
+            fetch(url)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.fields && data.fields.count) {
+                        const count = parseInt(data.fields.count.integerValue);
+                        updateCountDisplay(count);
+                    }
+                })
+                .catch(err => console.error("Load count error:", err));
+        }
+
+        function updateCountDisplay(count) {
+            document.getElementById('joinCount').textContent = count;
+            document.getElementById('filledSpots').textContent = count;
+            document.getElementById('nextCount').textContent = count + 1;
+            const pct = (count / 1000) * 100;
+            document.getElementById('progressFill').style.width = pct + '%';
+        }
+
         window.handleSubmit = function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
@@ -456,8 +479,8 @@
             btn.textContent = 'Joining...';
             status.textContent = '';
 
-            // Use REST API instead of SDK
-            const apiUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/signups`;
+            // Step 1: Save the email
+            const signupsUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/signups?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
             
             const payload = {
                 fields: {
@@ -466,24 +489,48 @@
                 }
             };
 
-            fetch(apiUrl + "?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo", {
+            fetch(signupsUrl, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
             })
             .then(res => {
-                console.log("Response status:", res.status);
-                if (res.ok) {
-                    status.textContent = '✓ Welcome! Check your email for next steps.';
-                    status.className = 'form-status form-success';
-                    document.getElementById('email').value = '';
-                    setTimeout(() => { status.textContent = ''; }, 3000);
-                } else {
-                    return res.json().then(err => { throw err; });
+                if (!res.ok) return res.json().then(err => { throw err; });
+                // Step 2: Get current count
+                const countUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
+                return fetch(countUrl);
+            })
+            .then(res => res.json())
+            .then(data => {
+                let currentCount = 15;
+                if (data.fields && data.fields.count) {
+                    currentCount = parseInt(data.fields.count.integerValue);
                 }
+                const newCount = currentCount + 1;
+                
+                // Step 3: Update the count
+                const updateUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
+                const updatePayload = {
+                    fields: {
+                        count: { integerValue: newCount.toString() }
+                    }
+                };
+                
+                return fetch(updateUrl, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updatePayload)
+                }).then(() => newCount);
+            })
+            .then(newCount => {
+                updateCountDisplay(newCount);
+                status.textContent = '✓ You\'re founding member #' + newCount + '! Check your email.';
+                status.className = 'form-status form-success';
+                document.getElementById('email').value = '';
+                setTimeout(() => { status.textContent = ''; }, 4000);
             })
             .catch(err => {
-                console.error("REST API error:", err);
+                console.error("Error:", err);
                 status.textContent = 'Error: Check console logs';
                 status.className = 'form-status form-error';
             })
@@ -519,6 +566,7 @@
         }
 
         startCountdown();
+        loadCount();
 
         window.scrollToSection = function(id) {
             const el = document.getElementById(id);
