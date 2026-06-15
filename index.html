@@ -447,10 +447,11 @@
         }
 
         // Load the current count on page load
-        function loadCount() {
+        function loadCount(retries) {
+            retries = retries || 0;
             const url = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
             
-            fetch(url)
+            fetch(url, { method: 'GET', mode: 'cors' })
                 .then(res => res.json())
                 .then(data => {
                     console.log("Count document data:", JSON.stringify(data));
@@ -463,7 +464,11 @@
                 })
                 .catch(err => {
                     console.error("Load count error:", err);
-                    updateCountDisplay(15);
+                    if (retries < 3) {
+                        setTimeout(() => loadCount(retries + 1), 1000);
+                    } else {
+                        updateCountDisplay(15);
+                    }
                 });
         }
 
@@ -525,7 +530,7 @@
                 const newCount = currentCount + 1;
                 
                 // Step 3: Update the count
-                const updateUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
+                const updateUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo&updateMask.fieldPaths=count`;
                 const updatePayload = {
                     fields: {
                         count: { integerValue: newCount.toString() }
@@ -582,7 +587,7 @@
         }
 
         startCountdown();
-        loadCount();
+        setTimeout(() => loadCount(), 500);
 
         window.scrollToSection = function(id) {
             const el = document.getElementById(id);
