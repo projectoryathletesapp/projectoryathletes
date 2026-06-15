@@ -453,9 +453,9 @@
             const status = document.getElementById('status');
 
             if (!db) {
-                status.textContent = 'Firebase not ready';
+                status.textContent = 'Firebase not ready. Refreshing...';
                 status.className = 'form-status form-error';
-                console.error("db not initialized");
+                location.reload();
                 return;
             }
 
@@ -463,21 +463,14 @@
             btn.textContent = 'Joining...';
             status.textContent = '';
 
-            console.log("Attempting to add email:", email);
+            console.log("Writing to signups:", email);
 
-            const timeout = setTimeout(() => {
-                console.error("Firebase write timeout");
-                status.textContent = 'Timeout. Check your connection.';
-                status.className = 'form-status form-error';
-                btn.disabled = false;
-                btn.textContent = 'Become a Founding Member';
-            }, 5000);
-
-            db.collection("signups").add({
-                email: email
-            }).then((docRef) => {
-                clearTimeout(timeout);
-                console.log("Document written:", docRef.id);
+            // Try writing directly without waiting for response
+            db.collection("signups").doc().set({
+                email: email,
+                timestamp: new Date()
+            }, { merge: true }).then(() => {
+                console.log("Success!");
                 status.textContent = '✓ Welcome! Check your email for next steps.';
                 status.className = 'form-status form-success';
                 document.getElementById('email').value = '';
@@ -485,11 +478,8 @@
                 btn.textContent = 'Become a Founding Member';
                 setTimeout(() => { status.textContent = ''; }, 3000);
             }).catch(err => {
-                clearTimeout(timeout);
-                console.error("Firebase error code:", err.code);
-                console.error("Firebase error message:", err.message);
-                console.error("Full error:", err);
-                status.textContent = 'Error: ' + (err.code || err.message);
+                console.error("Error code:", err.code, "Message:", err.message);
+                status.textContent = 'Error: ' + (err.code || 'Connection failed');
                 status.className = 'form-status form-error';
                 btn.disabled = false;
                 btn.textContent = 'Become a Founding Member';
