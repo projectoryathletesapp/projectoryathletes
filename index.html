@@ -418,52 +418,67 @@
     </footer>
 
     <script>
+        let db = null;
+
         function initFirebase() {
             if (typeof firebase === 'undefined') {
                 setTimeout(initFirebase, 100);
                 return;
             }
 
-            const firebaseConfig = {
-                apiKey: "AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo",
-                authDomain: "projectoryapp.firebaseapp.com",
-                projectId: "projectoryapp",
-                storageBucket: "projectoryapp.firebasestorage.app",
-                messagingSenderId: "377779159440",
-                appId: "1:377779159440:web:c8cc9703b50a4da381f315"
-            };
+            try {
+                const firebaseConfig = {
+                    apiKey: "AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo",
+                    authDomain: "projectoryapp.firebaseapp.com",
+                    projectId: "projectoryapp",
+                    storageBucket: "projectoryapp.firebasestorage.app",
+                    messagingSenderId: "377779159440",
+                    appId: "1:377779159440:web:c8cc9703b50a4da381f315"
+                };
 
-            firebase.initializeApp(firebaseConfig);
-            const db = firebase.firestore();
-
-            window.handleSubmit = function(e) {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const btn = document.getElementById('btn');
-                const status = document.getElementById('status');
-
-                btn.disabled = true;
-                btn.textContent = 'Joining...';
-                status.textContent = '';
-
-                db.collection("signups").add({
-                    email: email
-                }).then(() => {
-                    status.textContent = '✓ Welcome! Check your email for next steps.';
-                    status.className = 'form-status form-success';
-                    document.getElementById('email').value = '';
-                    btn.disabled = false;
-                    btn.textContent = 'Become a Founding Member';
-                    setTimeout(() => { status.textContent = ''; }, 3000);
-                }).catch(err => {
-                    console.error("Firebase error:", err);
-                    status.textContent = 'Error: ' + err.message;
-                    status.className = 'form-status form-error';
-                    btn.disabled = false;
-                    btn.textContent = 'Become a Founding Member';
-                });
-            };
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                db = firebase.firestore();
+                console.log("Firebase ready");
+            } catch (err) {
+                console.error("Firebase init error:", err);
+            }
         }
+
+        window.handleSubmit = function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const btn = document.getElementById('btn');
+            const status = document.getElementById('status');
+
+            if (!db) {
+                status.textContent = 'Firebase loading... try again';
+                status.className = 'form-status form-error';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Joining...';
+            status.textContent = '';
+
+            db.collection("signups").add({
+                email: email
+            }).then(() => {
+                status.textContent = '✓ Welcome! Check your email for next steps.';
+                status.className = 'form-status form-success';
+                document.getElementById('email').value = '';
+                btn.disabled = false;
+                btn.textContent = 'Become a Founding Member';
+                setTimeout(() => { status.textContent = ''; }, 3000);
+            }).catch(err => {
+                console.error("Firebase error:", err);
+                status.textContent = 'Error: ' + err.message;
+                status.className = 'form-status form-error';
+                btn.disabled = false;
+                btn.textContent = 'Become a Founding Member';
+            });
+        };
 
         initFirebase();
 
