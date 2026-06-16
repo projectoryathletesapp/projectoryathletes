@@ -121,21 +121,85 @@
         .footer-links a { color: #7A8A7A; text-decoration: none; transition: color 0.3s; }
         .footer-links a:hover { color: #3DD68C; }
         @media (max-width: 768px) {
+            .container { padding: 0 16px; }
+            header { padding: 12px 0; }
             nav ul { display: none; }
-            .hero h1 { font-size: 36px; }
-            .hero-cta { flex-direction: column; }
+            .logo { font-size: 20px; }
+            .cta-button { padding: 10px 16px; font-size: 13px; }
+            .hero { padding: 40px 0; }
+            .hero h1 { font-size: 32px; margin-bottom: 12px; }
+            .hero-subtitle { font-size: 14px; margin-bottom: 16px; }
+            .hero-cta { flex-direction: column; gap: 12px; }
             .cta-button { width: 100%; }
-            .carousel { grid-template-columns: repeat(2, 1fr); }
-            .athlete-cards { grid-template-columns: 1fr; }
-            .demo-steps { grid-template-columns: 1fr; }
+            .demo-video { max-width: 100%; margin: 20px auto; }
+            .countdown-section { padding: 24px 0; }
+            .countdown-label { font-size: 12px; }
+            .countdown-display { font-size: 32px; letter-spacing: 1px; }
+            .countdown-subtext { font-size: 12px; }
+            .screenshots { padding: 40px 0; }
+            .screenshots h2 { font-size: 28px; margin-bottom: 32px; }
+            .carousel { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .screenshot-image { font-size: 32px; }
+            .screenshot-label h3 { font-size: 12px; }
+            .screenshot-label p { font-size: 11px; }
+            .social-proof { padding: 40px 0; }
+            .social-proof h2 { font-size: 28px; margin-bottom: 32px; }
+            .athlete-cards { grid-template-columns: 1fr; gap: 16px; }
+            .athlete-photo { font-size: 48px; }
+            .athlete-name { font-size: 14px; }
+            .athlete-quote { font-size: 12px; }
+            .scarcity-section { padding: 24px 0; }
+            .scarcity-card { padding: 20px; margin-bottom: 24px; }
+            .scarcity-heading { font-size: 22px; }
+            .scarcity-badge { font-size: 11px; padding: 6px 12px; }
+            .perks-list li { font-size: 12px; margin-bottom: 6px; }
+            .progress-text { font-size: 11px; }
+            .interactive-demo { padding: 40px 0; }
+            .interactive-demo h2 { font-size: 28px; margin-bottom: 32px; }
+            .demo-steps { grid-template-columns: 1fr; gap: 16px; }
+            .demo-step { padding: 20px; }
+            .demo-step-number { font-size: 24px; }
+            .demo-step h3 { font-size: 14px; }
+            .demo-step p { font-size: 12px; }
+            .features { padding: 40px 0; }
+            .features h2 { font-size: 28px; margin-bottom: 32px; }
+            .feature-grid { grid-template-columns: 1fr; gap: 20px; }
+            .feature-card { padding: 20px; }
+            .feature-icon { font-size: 32px; }
+            .feature-card h3 { font-size: 15px; }
+            .feature-card p { font-size: 12px; }
+            .trust-badges { padding: 32px 0; }
+            .trust-badges h2 { font-size: 22px; margin-bottom: 24px; }
+            .badges-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+            .badge { padding: 16px; }
+            .badge-icon { font-size: 24px; }
+            .badge h3 { font-size: 12px; }
+            .badge p { font-size: 10px; }
+            .faq { padding: 40px 0; }
+            .faq h2 { font-size: 28px; margin-bottom: 32px; }
+            .faq-item { padding: 16px; margin-bottom: 12px; }
+            .faq-item h3 { font-size: 13px; }
+            .faq-item p { font-size: 12px; padding-top: 12px; }
+            .waitlist { padding: 40px 0; }
+            .waitlist h2 { font-size: 28px; margin-bottom: 24px; }
             .waitlist-form { flex-direction: column; }
-            .waitlist-form button { width: 100%; }
-            .countdown-display { font-size: 32px; }
+            .waitlist-form input { padding: 12px; font-size: 14px; width: 100%; }
+            .waitlist-form button { padding: 12px; font-size: 13px; width: 100%; }
+            footer { padding: 32px 0; }
+            .footer-links { gap: 16px; }
         }
         @media (max-width: 480px) {
+            .container { padding: 0 12px; }
+            .logo { font-size: 18px; }
+            .hero h1 { font-size: 26px; line-height: 1.1; }
+            .hero-subtitle { font-size: 13px; }
             .carousel { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 28px; }
             .scarcity-heading { font-size: 20px; }
+            .demo-step { padding: 16px; }
+            .demo-step-number { font-size: 20px; }
+            .feature-card { padding: 16px; }
+            .badges-grid { grid-template-columns: 1fr; }
+            .faq-item { padding: 12px; }
         }
     </style>
 </head>
