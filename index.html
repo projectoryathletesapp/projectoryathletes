@@ -225,7 +225,7 @@
         <section class="hero">
             <div class="container">
                 <h1>Train Together.<br>Off-Season, On Time.</h1>
-                <p class="hero-subtitle">Connect with verified college athletes near you. Post training clips, find partners, lock in sessions. Free.</p>
+                <p class="hero-subtitle">Connect with verified college athletes near you. Post training clips, find partners, lock in sessions. Free forever.</p>
                 <div class="hero-cta">
                     <button class="cta-button" onclick="scrollToSection('waitlist')">Become a Founding Member</button>
                     <button class="cta-button cta-button-outline" onclick="scrollToSection('features')">See How It Works</button>
@@ -404,7 +404,7 @@
                     </div>
                     <div class="badge">
                         <div class="badge-icon">💰</div>
-                        <h3>Free</h3>
+                        <h3>Free </h3>
                         <p>Free to use. No hidden fees. No premium walls.</p>
                     </div>
                     <div class="badge">
@@ -421,11 +421,11 @@
                 <h2>Questions?</h2>
                 <div class="faq-item" onclick="toggleFAQ(this)">
                     <h3>Is Projectory free?</h3>
-                    <p>Yes, Projectory is free. No premium tiers, no paywalls, no hidden fees. It's built for athletes, not for profit.</p>
+                    <p>Yes, projectory is free. No premium tiers, no paywalls, no hidden fees. It's built for athletes, not for profit.</p>
                 </div>
                 <div class="faq-item" onclick="toggleFAQ(this)">
                     <h3>What are the founding member perks?</h3>
-                    <p>Founding members get: early access 30 days before launch, "Founding Member" badge, exclusive Discord community, and priority support. The app is completely free for everyone.</p>
+                    <p>Founding members get: early access 30 days before launch, "Founding Member" badge forever, exclusive Discord community, and priority support. The app is completely free for everyone.</p>
                 </div>
                 <div class="faq-item" onclick="toggleFAQ(this)">
                     <h3>Can I post training videos?</h3>
@@ -477,7 +477,7 @@
                 <a href="https://github.com/projectoryathletesapp" target="_blank">GitHub</a>
                 <a href="https://twitter.com/projectoryapp" target="_blank">Twitter</a>
             </div>
-            <p>&copy; 2026 Projectory. Built by athletes, for athletes. Free to use.</p>
+            <p>&copy; 2026 Projectory. Built by athletes, for athletes. Forever free.</p>
         </div>
     </footer>
 
@@ -510,25 +510,19 @@
             }
         }
 
-        // Load the current count using Firebase SDK
+        // Load the current count on page load
         function loadCount(retries) {
             retries = retries || 0;
-            if (!db) {
-                if (retries < 5) {
-                    setTimeout(() => loadCount(retries + 1), 500);
-                } else {
-                    updateCountDisplay(15);
-                }
-                return;
-            }
-
-            db.collection("stats").doc("waitlist").get()
-                .then(doc => {
-                    if (doc.exists) {
-                        const count = doc.data().count || 15;
+            const url = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
+            
+            fetch(url, { method: 'GET', mode: 'cors' })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Count document data:", JSON.stringify(data));
+                    const count = extractCount(data);
+                    if (count !== null) {
                         updateCountDisplay(count);
                     } else {
-                        console.log("Waitlist doc doesn't exist");
                         updateCountDisplay(15);
                     }
                 })
@@ -540,6 +534,16 @@
                         updateCountDisplay(15);
                     }
                 });
+        }
+
+        function extractCount(data) {
+            if (data && data.fields && data.fields.count) {
+                const c = data.fields.count;
+                if (c.integerValue !== undefined) return parseInt(c.integerValue);
+                if (c.doubleValue !== undefined) return Math.floor(c.doubleValue);
+                if (c.stringValue !== undefined) return parseInt(c.stringValue);
+            }
+            return null;
         }
 
         function updateCountDisplay(count) {
@@ -561,33 +565,47 @@
             btn.textContent = 'Joining...';
             status.textContent = '';
 
-            if (!db) {
-                status.textContent = 'Error: Firebase not ready';
-                status.className = 'form-status form-error';
-                btn.disabled = false;
-                btn.textContent = 'Become a Founding Member';
-                return;
-            }
-
             // Step 1: Save the email
-            db.collection("signups").add({
-                email: email,
-                timestamp: new Date()
-            })
-            .then(() => {
-                // Step 2: Get current count and increment
-                return db.collection("stats").doc("waitlist").get();
-            })
-            .then(doc => {
-                let currentCount = 15;
-                if (doc.exists) {
-                    currentCount = doc.data().count || 15;
+            const signupsUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/signups?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
+            
+            const payload = {
+                fields: {
+                    email: { stringValue: email },
+                    timestamp: { timestampValue: new Date().toISOString() }
                 }
-                const newCount = currentCount + 1;
+            };
 
+            fetch(signupsUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            })
+            .then(res => {
+                if (!res.ok) return res.json().then(err => { throw err; });
+                // Step 2: Get current count
+                const countUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo`;
+                return fetch(countUrl);
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log("Count data on submit:", JSON.stringify(data));
+                let currentCount = extractCount(data);
+                if (currentCount === null || isNaN(currentCount)) currentCount = 15;
+                const newCount = currentCount + 1;
+                
                 // Step 3: Update the count
-                return db.collection("stats").doc("waitlist").set({ count: newCount })
-                    .then(() => newCount);
+                const updateUrl = `https://firestore.googleapis.com/v1/projects/projectoryapp/databases/projectoryapp/documents/stats/waitlist?key=AIzaSyDpu7pk14MJ86AjD-srH2SSD038tVuF1fo&updateMask.fieldPaths=count`;
+                const updatePayload = {
+                    fields: {
+                        count: { integerValue: newCount.toString() }
+                    }
+                };
+                
+                return fetch(updateUrl, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(updatePayload)
+                }).then(() => newCount);
             })
             .then(newCount => {
                 updateCountDisplay(newCount);
@@ -598,7 +616,7 @@
             })
             .catch(err => {
                 console.error("Error:", err);
-                status.textContent = 'Error: ' + err.message;
+                status.textContent = 'Error: Check console logs';
                 status.className = 'form-status form-error';
             })
             .finally(() => {
